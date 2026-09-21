@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profiles overview</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #14161a;
+    --card-bg: #1e2128;
+    --border: #2c303a;
+    --text: #e8e9ec;
+    --muted: #9aa0ac;
+    --accent: #7aa2ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 20px 60px;
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.5 -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 28px; font-size: 13px; }
+  .profile { margin-bottom: 40px; }
+  .profile h2 {
+    font-size: 17px; margin: 0 0 4px;
+    border-bottom: 1px solid var(--border); padding-bottom: 8px;
+  }
+  .meta { color: var(--muted); margin: 6px 0 14px; font-size: 12.5px; }
+  .profile-body { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    flex: 1 1 480px;
+  }
+  .card {
+    margin: 0; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden; cursor: zoom-in;
+    transition: transform .12s ease, border-color .12s ease;
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .card img { display: block; width: 100%; height: auto; aspect-ratio: 1/1; object-fit: cover; background: #0b0c0f; }
+  .card figcaption {
+    padding: 7px 9px; font-size: 11.5px; color: var(--muted);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  /* Tall reference sheet, not a square photo - show it uncropped, full height. */
+  .bgsheet-card { flex: 0 0 170px; }
+  .bgsheet-card img {
+    aspect-ratio: auto; height: 420px; width: 100%;
+    object-fit: contain; background: #0b0c0f;
+  }
+  #lightbox {
+    position: fixed; inset: 0; background: rgba(6,7,9,.92);
+    display: none; align-items: center; justify-content: center;
+    padding: 40px 20px; overflow: auto; z-index: 100;
+  }
+  #lightbox.open { display: flex; }
+  #lightbox figure { margin: 0; text-align: center; max-width: 100%; }
+  #lightbox img {
+    display: block; image-rendering: auto; margin: 0 auto;
+    max-width: min(88vw, var(--full-w, 1600px)); max-height: 82vh;
+    width: auto; height: auto; cursor: zoom-in;
+  }
+  #lightbox img.zoomed {
+    max-width: none; max-height: none; cursor: zoom-out;
+  }
+  #lightbox figcaption {
+    color: var(--muted); margin-top: 12px; font-size: 13px;
+  }
+  #lightbox .hint { color: var(--muted); font-size: 11.5px; margin-top: 4px; }
+  #closeBtn {
+    position: fixed; top: 16px; right: 20px; z-index: 101;
+    background: var(--card-bg); color: var(--text); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 14px; font-size: 13px; cursor: pointer;
+  }
+  #closeBtn:hover { border-color: var(--accent); }
+  .navBtn {
+    position: fixed; top: 50%; transform: translateY(-50%); z-index: 101;
+    background: var(--card-bg); color: var(--text); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 10px; font-size: 20px; cursor: pointer;
+    line-height: 1; opacity: .85;
+  }
+  .navBtn:hover { border-color: var(--accent); opacity: 1; }
+  .navBtn:disabled { opacity: .3; cursor: default; }
+  #prevBtn { left: 16px; }
+  #nextBtn { right: 16px; }
+  #zoomBar {
+    position: fixed; top: 16px; left: 20px; z-index: 101;
+    display: flex; gap: 6px;
+  }
+  #zoomBar button {
+    background: var(--card-bg); color: var(--text); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 12px; font-size: 14px; cursor: pointer;
+  }
+  #zoomBar button:hover { border-color: var(--accent); }
+</style>
+</head>
+<body>
+  <h1>Profiles overview</h1>
+  <p class="sub">18 profile(s), 1550 image(s) &mdash; click any photo for full size, use Prev/Next or the arrow keys to move through them</p>
+
+<h1>Krea 2 model/checkpoint evaluation — 18 variants × profiles p001–p010</h1><p>Same 10 profiles, same poses, same seeds, same identity-lock settings for every variant; only the checkpoint or one LoRA changes per variant. Identity fidelity = ArcFace cosine similarity between each generated image's main face and the profile's anchor portrait (&gt;0.50 strong, 0.35–0.50 plausible, &lt;0.35 drift). Flag = drift, no face, or misplaced torso face.</p><table border='1' cellpadding='6' cellspacing='0'><tr><th>Variant (ranked by identity fidelity)</th><th>Images</th><th>Mean sim</th><th>Min sim</th><th>Flagged</th><th>Misplaced-face</th></tr><tr><td><a href='v5_betterpussy/index.html'>V5 · LoRA: Krea2 Better Pussy v4.1 (female anatomy, female profiles)</a></td><td>50</td><td>0.656</td><td>0.442</td><td>0</td><td>0</td></tr><tr><td><a href='v18_futa/index.html'>V18 · LoRA: Large-Huge Erect Penis (trans/futa, female profiles)</a></td><td>50</td><td>0.644</td><td>0.312</td><td>1</td><td>0</td></tr><tr><td><a href='v16_nicegirls/index.html'>V16 · LoRA: nicegirls_ultrareal (female explicit)</a></td><td>100</td><td>0.586</td><td>0.092</td><td>9</td><td>0</td></tr><tr><td><a href='v14_galaxyace/index.html'>V14 · LoRA: galaxyace (female explicit)</a></td><td>100</td><td>0.585</td><td>0.092</td><td>11</td><td>0</td></tr><tr><td><a href='v17_avgpenis/index.html'>V17 · LoRA: Average Male Penis uncut (male profiles)</a></td><td>50</td><td>0.585</td><td>0.167</td><td>3</td><td>0</td></tr><tr><td><a href='v7_malepack/index.html'>V7 · LoRA pack: DickTator + prvpns penis-realism (male profiles)</a></td><td>50</td><td>0.582</td><td>0.067</td><td>3</td><td>0</td></tr><tr><td><a href='v8_trans/index.html'>V8 · LoRA: Trans Smartphone Realism (trans-woman, female profiles)</a></td><td>50</td><td>0.555</td><td>0.263</td><td>3</td><td>0</td></tr><tr><td><a href='v9_moody/index.html'>V9 · Checkpoint: moody_krea2_v40</a></td><td>100</td><td>0.552</td><td>0.129</td><td>7</td><td>0</td></tr><tr><td><a href='v11_aionsfw/index.html'>V11 · LoRA: Krea2 AIO NSFW (all-in-one explicit)</a></td><td>100</td><td>0.531</td><td>0.092</td><td>13</td><td>0</td></tr><tr><td><a href='v4_mystic/index.html'>V4 · LoRA: Mystic XXX v3 (female explicit)</a></td><td>100</td><td>0.53</td><td>0.092</td><td>11</td><td>0</td></tr><tr><td><a href='v15_rawgirl/index.html'>V15 · LoRA: rawgirlspicy (female explicit)</a></td><td>100</td><td>0.518</td><td>0.092</td><td>10</td><td>0</td></tr><tr><td><a href='v1_baseline/index.html'>V1 · Baseline (current production stack)</a></td><td>100</td><td>0.514</td><td>0.092</td><td>13</td><td>0</td></tr><tr><td><a href='v13_realismv2/index.html'>V13 · LoRA: Krea2-realism-V2 (realism slot)</a></td><td>100</td><td>0.499</td><td>0.045</td><td>16</td><td>0</td></tr><tr><td><a href='v12_bloomgirls/index.html'>V12 · LoRA: BloomGirls UltraRealism (realism slot)</a></td><td>100</td><td>0.474</td><td>-0.01</td><td>24</td><td>0</td></tr><tr><td><a href='v6_selfieleak/index.html'>V6 · LoRA: Nude Selfieleak v1.1 (amateur phone-selfie aesthetic)</a></td><td>100</td><td>0.471</td><td>0.019</td><td>21</td><td>0</td></tr><tr><td><a href='v10_neutrino/index.html'>V10 · Checkpoint: Krea 2 Neutrino v2.0</a></td><td>100</td><td>0.412</td><td>-0.05</td><td>40</td><td>0</td></tr><tr><td><a href='v3_char18/index.html'>V3 · Checkpoint: Krea2 Turbo 18+ for Character LoRAs v2</a></td><td>100</td><td>0.353</td><td>0.044</td><td>48</td><td>0</td></tr><tr><td><a href='v2_dirtyrealism/index.html'>V2 · Checkpoint: Krea2-SAT-DirtyRealism v5</a></td><td>100</td><td>0.278</td><td>-0.0</td><td>72</td><td>0</td></tr></table>
+
+  <div id="lightbox">
+    <div id="zoomBar">
+      <button id="zoomOutBtn" type="button" aria-label="Zoom out">&minus;</button>
+      <button id="zoomResetBtn" type="button" aria-label="Reset zoom">1:1</button>
+      <button id="zoomInBtn" type="button" aria-label="Zoom in">+</button>
+    </div>
+    <button id="closeBtn" type="button">Close &#10005;</button>
+    <button id="prevBtn" class="navBtn" type="button" aria-label="Previous">&#8592;</button>
+    <button id="nextBtn" class="navBtn" type="button" aria-label="Next">&#8594;</button>
+    <figure>
+      <img id="lightboxImg" src="" alt="">
+      <figcaption id="lightboxCaption"></figcaption>
+      <div class="hint">Prev / Next or &larr; / &rarr; to browse &middot; +/&minus; or click the image to zoom, 0 to reset &middot; Esc or click outside to close</div>
+    </figure>
+  </div>
+
+<script>
+(function() {
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightboxImg');
+  const lbCap = document.getElementById('lightboxCaption');
+  const cards = Array.from(document.querySelectorAll('.card'));
+  let index = -1;
+
+  // Zoom is a plain multiplier on the image's own pixel width - 1 is "fit"
+  // (the normal max-width/max-height CSS below), anything above that sets an
+  // explicit pixel width so the browser can grow past the viewport and
+  // #lightbox (overflow:auto) scrolls to it.
+  const ZOOM_STEPS = [1, 1.5, 2, 3, 4];
+  let zoomIdx = 0;
+
+  function applyZoom() {
+    const card = cards[index];
+    const zoom = ZOOM_STEPS[zoomIdx];
+    if (zoom <= 1) {
+      lbImg.classList.remove('zoomed');
+      lbImg.style.width = '';
+    } else {
+      lbImg.classList.add('zoomed');
+      lbImg.style.width = (Number(card.dataset.w) * zoom) + 'px';
+    }
+  }
+  function resetZoom() {
+    zoomIdx = 0;
+    applyZoom();
+    lb.scrollTop = 0; lb.scrollLeft = 0;
+  }
+  function zoomBy(delta) {
+    if (index < 0) return;
+    zoomIdx = Math.max(0, Math.min(ZOOM_STEPS.length - 1, zoomIdx + delta));
+    applyZoom();
+  }
+
+  function render() {
+    const card = cards[index];
+    lbImg.src = card.dataset.full;
+    lbImg.width = card.dataset.w;
+    lbImg.height = card.dataset.h;
+    lbImg.style.setProperty('--full-w', card.dataset.w + 'px');
+    lb.style.setProperty('--full-w', card.dataset.w + 'px');
+    lbCap.textContent = card.dataset.caption || '';
+    resetZoom();
+  }
+  function open(i) {
+    index = i;
+    render();
+    lb.classList.add('open');
+  }
+  function close() {
+    lb.classList.remove('open');
+    lbImg.src = '';
+    index = -1;
+  }
+  function step(delta) {
+    if (index < 0) return;
+    index = (index + delta + cards.length) % cards.length;
+    render();
+  }
+
+  cards.forEach(function(card, i) {
+    card.addEventListener('click', function() { open(i); });
+  });
+  document.getElementById('closeBtn').addEventListener('click', close);
+  document.getElementById('prevBtn').addEventListener('click', function() { step(-1); });
+  document.getElementById('nextBtn').addEventListener('click', function() { step(1); });
+  document.getElementById('zoomInBtn').addEventListener('click', function() { zoomBy(1); });
+  document.getElementById('zoomOutBtn').addEventListener('click', function() { zoomBy(-1); });
+  document.getElementById('zoomResetBtn').addEventListener('click', resetZoom);
+  lbImg.addEventListener('click', function(e) {
+    e.stopPropagation();
+    zoomIdx > 0 ? resetZoom() : zoomBy(1);
+  });
+  lb.addEventListener('click', function(e) {
+    if (e.target === lb) close();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') step(-1);
+    else if (e.key === 'ArrowRight') step(1);
+    else if (e.key === '+' || e.key === '=') zoomBy(1);
+    else if (e.key === '-' || e.key === '_') zoomBy(-1);
+    else if (e.key === '0') resetZoom();
+  });
+})();
+</script>
+</body>
+</html>

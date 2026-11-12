@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Medium Personas v5 — Gaze-Locked Identity Shift</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 20px; background: #141517; color: #e8e8e8;
+         font-family: "Segoe UI", system-ui, sans-serif; }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+  p.sub { margin: 0 0 28px; color: #9a9a9a; font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+          gap: 20px; max-width: 1800px; margin: 0 auto; }
+  .card { background: #1d1f22; border: 1px solid #2c2f33; border-radius: 10px; overflow: hidden; }
+  .pair { display: flex; gap: 2px; }
+  .pair figure { margin: 0; flex: 1; min-width: 0; }
+  .pair img { width: 100%; height: auto; display: block; }
+  .pair figcaption { text-align: center; font-size: 12px; padding: 8px 4px;
+    color: #bdbdbd; background: #232527; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pair figcaption b { color: #e8e8e8; font-weight: 600; }
+  .tag { display: inline-block; font-size: 10px; letter-spacing: .06em; text-transform: uppercase;
+         padding: 2px 7px; border-radius: 4px; margin-right: 6px; }
+  .tag.ref { background: #3a3d42; color: #cfcfcf; }
+  .tag.gen { background: #1f4d33; color: #7fd6a4; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <h1>Medium Personas v5 — Gaze-Locked Identity Shift</h1>
+  <p class="sub">v4 recipe + per-image gaze/head-direction lock from VLM analysis of each reference</p>
+  <div class="grid" id="grid"></div>
+<script>
+  const ids = ["advisor-holly", "advisor-janet", "advisor-lauren", "advisor-lynda", "advisor-marlo", "advisor-monica", "advisor-nasta", "advisor-rachel", "advisor-sammi", "advisor-sammy", "advisor-scarlett", "advisor-skyler", "advisor-tabitha-marks", "advisor-taylor", "ailish", "aim-tru", "aine-ra", "aiyanna", "ajarn-lily", "alaria", "alaska", "alex-angelo", "alexander", "alexandria", "ali-m"];
+  const grid = document.getElementById('grid');
+  for (const id of ids) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="pair">
+        <figure>
+          <img src="images/ref_${id}.png" alt="reference ${id}" loading="lazy">
+          <figcaption><span class="tag ref">Reference</span><b>${id}</b></figcaption>
+        </figure>
+        <figure>
+          <img src="images/gen_${id}.png" alt="generated ${id}" loading="lazy">
+          <figcaption><span class="tag gen">Generated</span><b>${id}</b></figcaption>
+        </figure>
+      </div>`;
+    grid.appendChild(card);
+  }
+</script>
+</body>
+</html>
